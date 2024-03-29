@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import { makeRequest, makePaginate, PaginationOptions, PaginationApiMethod } from './BaseAPI'
-import promiseRetry from 'promise-retry'
 import type { CWMOptions } from './ManageAPI'
 import { CWLogger, DataResponse, ErrorResponse, RequestOptions, RetryOptions } from './types'
 
