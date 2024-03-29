@@ -14202,7 +14202,7 @@ export interface components {
     PatchOperation: {
       op?: string;
       path?: string;
-      value?: { [key: string]: unknown };
+      value?: string | { [key: string]: unknown };
     };
     Payment: {
       /** Format: int32 */
