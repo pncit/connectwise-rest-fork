@@ -42,7 +42,6 @@ export const makeRequest =
           logger(
             'error',
             `${method} ${path} ${Date.now() - startTime}ms params=${JSON.stringify(params)}`,
-            error,
           )
           throw error
         })
@@ -76,7 +75,6 @@ export const makeRequest =
             `${method} ${path} ${Date.now() - startTime}ms error occurred: ${
               error.code
             }, params=${JSON.stringify(params)}`,
-            error,
           )
           throw error
         })
@@ -163,10 +161,30 @@ function getPage(
   // look for CommonParams and inject page and pageSize
   // check for apiMethod function args length
   // get last arg
-  const commonParams = <CommonParameters>methodArgs.pop()
+  const commonParams = <CommonParameters & { id?: number, parentId?: number, grandparentId?: number,  }>methodArgs.pop()
   commonParams.page = page
   commonParams.pageSize = pageSize
-
+  if (commonParams.parentId !== undefined) {
+    // if id is defined, we need to remove it from the commonParams
+    // and add it back to the methodArgs
+    const id = commonParams.id
+    delete commonParams.id
+    methodArgs.push({ id })
+  }
+  if (commonParams.parentId !== undefined) {
+    // if parentId is defined, we need to remove it from the commonParams
+    // and add it back to the methodArgs
+    const parentId = commonParams.parentId
+    delete commonParams.parentId
+    methodArgs.push({ parentId })
+  }
+  if (commonParams.grandparentId !== undefined) {
+    // if grandparentId is defined, we need to remove it from the commonParams
+    // and add it back to the methodArgs
+    const grandparentId = commonParams.grandparentId
+    delete commonParams.grandparentId
+    methodArgs.push({ grandparentId })
+  }
   methodArgs.push(commonParams)
 
   return apiMethod.apply(thisObj, methodArgs)
