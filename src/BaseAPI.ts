@@ -143,7 +143,7 @@ export const makePaginate =
  */
 function getPage(
   apiMethod: PaginationApiMethod,
-  methodArgs: Record<string, unknown>[],
+  methodArgs: (Record<string, unknown> | number)[],
   thisObj: InstanceType<typeof Automate | typeof Manage>,
   page = 1,
   pageSize = 1000,
@@ -164,26 +164,26 @@ function getPage(
   const commonParams = <CommonParameters & { id?: number, parentId?: number, grandparentId?: number,  }>methodArgs.pop()
   commonParams.page = page
   commonParams.pageSize = pageSize
-  if (commonParams.parentId !== undefined) {
+  if (commonParams.id !== undefined) {
     // if id is defined, we need to remove it from the commonParams
     // and add it back to the methodArgs
     const id = commonParams.id
     delete commonParams.id
-    methodArgs.push({ id })
+    methodArgs.push( id )
   }
   if (commonParams.parentId !== undefined) {
     // if parentId is defined, we need to remove it from the commonParams
     // and add it back to the methodArgs
     const parentId = commonParams.parentId
     delete commonParams.parentId
-    methodArgs.push({ parentId })
+    methodArgs.push( parentId )
   }
   if (commonParams.grandparentId !== undefined) {
     // if grandparentId is defined, we need to remove it from the commonParams
     // and add it back to the methodArgs
     const grandparentId = commonParams.grandparentId
     delete commonParams.grandparentId
-    methodArgs.push({ grandparentId })
+    methodArgs.push( grandparentId )
   }
   methodArgs.push(commonParams)
 
